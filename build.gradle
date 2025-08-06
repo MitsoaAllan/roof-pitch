@@ -144,6 +144,6 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter:1.19.1'
     testImplementation 'org.junit-pioneer:junit-pioneer:2.2.0'
 
-
+    implementation 'org.apache.commons:commons-math3:3.6.1'
 
 }
