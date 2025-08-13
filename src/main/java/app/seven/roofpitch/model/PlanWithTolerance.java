@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Getter
 public class PlanWithTolerance {
-    private Plan plan;
-    private double tolerance;
+  private Plan plan;
+  private double tolerance;
 }
