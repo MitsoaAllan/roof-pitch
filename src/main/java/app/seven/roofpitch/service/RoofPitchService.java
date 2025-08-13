@@ -1,5 +1,4 @@
 package app.seven.roofpitch.service;
-
 import app.seven.roofpitch.model.Point;
 import java.util.List;
 import org.apache.commons.math3.linear.*;
