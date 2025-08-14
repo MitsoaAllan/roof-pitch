@@ -1,21 +1,19 @@
 package app.seven.roofpitch.service;
-import app.seven.roofpitch.model.Plan;
+
 import app.seven.roofpitch.model.Point;
-
 import java.util.*;
-
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoofPitchService {
   private final double threshold;
 
-    public RoofPitchService(double threshold) {
-        this.threshold = threshold;
-    }
+  public RoofPitchService(double threshold) {
+    this.threshold = threshold;
+  }
 
   public RoofPitchService() {
-      this.threshold = 2;
+    this.threshold = 2;
   }
 
   public List<List<Point>> segmentIntoPlanes(List<Point> allPoints) {
