@@ -2,51 +2,53 @@ package app.seven.roofpitch.service;
 import app.seven.roofpitch.model.Plan;
 import app.seven.roofpitch.model.Point;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.commons.math3.linear.*;
+import java.util.*;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoofPitchService {
+  private final double threshold;
 
-  public List<Plan> getRoofPitch(List<Point> points) {
-    int n = points.size();
-    double sumX = 0, sumY = 0, sumZ = 0;
-    double sumX2 = 0, sumY2 = 0, sumXY = 0, sumXZ = 0, sumYZ = 0;
-
-    for (Point p : points) {
-      sumX += p.x();
-      sumY += p.y();
-      sumZ += p.z();
-      sumX2 += p.x() * p.x();
-      sumY2 += p.y() * p.y();
-      sumXY += p.x() * p.y();
-      sumXZ += p.x() * p.z();
-      sumYZ += p.y() * p.z();
+    public RoofPitchService(double threshold) {
+        this.threshold = threshold;
     }
 
-    double[][] A = {
-      {sumX2, sumXY, sumX},
-      {sumXY, sumY2, sumY},
-      {sumX, sumY, n}
-    };
-
-    double[] B = {sumXZ, sumYZ, sumZ};
-
-    double[] coeffs = solveLinearSystem(A, B);
-    double a = coeffs[0], b = coeffs[1];
-
-    double slopeRad = Math.acos(1 / Math.sqrt(a * a + b * b + 1));
-    double Deg = Math.toDegrees(slopeRad);
-    return new ArrayList<>();
+  public RoofPitchService() {
+      this.threshold = 2;
   }
 
-  private double[] solveLinearSystem(double[][] A, double[] B) {
-    RealMatrix coefficients = new Array2DRowRealMatrix(A, false);
-    DecompositionSolver solver = new LUDecomposition(coefficients).getSolver();
-    RealVector constants = new ArrayRealVector(B, false);
-    RealVector solution = solver.solve(constants);
-    return solution.toArray();
+  public List<List<Point>> segmentIntoPlanes(List<Point> allPoints) {
+    List<List<Point>> planes = new ArrayList<>();
+    Set<Point> used = new HashSet<>();
+    List<Point> points = new ArrayList<>(allPoints);
+
+    Iterator<Point> iterator = points.iterator();
+    while (iterator.hasNext()) {
+      Point current = iterator.next();
+
+      if (used.contains(current)) continue;
+
+      List<Point> neighbors = new ArrayList<>();
+      for (Point p : points) {
+        if (!p.equals(current) && !used.contains(p) && current.distance(p) < threshold) {
+          neighbors.add(p);
+        }
+      }
+
+      if (neighbors.size() >= 2) {
+        List<Point> newPlane = new ArrayList<>();
+        newPlane.add(current);
+        newPlane.addAll(neighbors);
+
+        planes.add(newPlane);
+        used.add(current);
+        used.addAll(neighbors);
+      } else {
+        used.add(current);
+      }
+    }
+
+    return planes;
   }
 }

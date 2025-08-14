@@ -14,7 +14,7 @@ public class RoofPitchController {
   private RoofPitchService roofPitchService;
 
   @GetMapping("/roofpitch")
-  public List<Plan> roofpitch(@RequestBody List<Point> file) {
-    return roofPitchService.getRoofPitch(file);
+  public List<List<Point>> roofpitch(List<Point> points) {
+    return roofPitchService.segmentIntoPlanes(points);
   }
 }

@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class Plan {
   private List<Point> points;
+  private Double degre;
 }
