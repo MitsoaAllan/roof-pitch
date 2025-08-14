@@ -1,17 +1,17 @@
 package app.seven.roofpitch.service;
 
 import app.seven.roofpitch.model.Point;
+import app.seven.roofpitch.model.RoofPlanResult;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import app.seven.roofpitch.model.RoofPlanResult;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoofPitchService {
 
-  public static List<RoofPlanResult> detectRoofPlanes(List<Point> allPoints, double tolPlane, double tolMergeXY, double tolMergeZ) {
+  public static List<RoofPlanResult> detectRoofPlanes(
+      List<Point> allPoints, double tolPlane, double tolMergeXY, double tolMergeZ) {
     List<RoofPlanResult> planes = new ArrayList<>();
     List<Point> points = new ArrayList<>(allPoints);
 
@@ -75,9 +75,8 @@ public class RoofPitchService {
   }
 
   private static double distance(Point p1, Point p2) {
-    return Math.sqrt(Math.pow(p1.x() - p2.x(), 2) +
-            Math.pow(p1.y() - p2.y(), 2) +
-            Math.pow(p1.z() - p2.z(), 2));
+    return Math.sqrt(
+        Math.pow(p1.x() - p2.x(), 2) + Math.pow(p1.y() - p2.y(), 2) + Math.pow(p1.z() - p2.z(), 2));
   }
 
   private static double[] computePlaneFromPoints(Point p1, Point p2, Point p3) {
@@ -93,15 +92,15 @@ public class RoofPitchService {
     double c = ux * vy - uy * vx;
 
     double d = -(a * p1.x() + b * p1.y() + c * p1.z());
-    return new double[]{a, b, c, d};
+    return new double[] {a, b, c, d};
   }
 
   private static double pointToPlaneDistance(Point p, double a, double b, double c, double d) {
-    return Math.abs(a * p.x() + b * p.y() + c * p.z() + d) /
-            Math.sqrt(a * a + b * b + c * c);
+    return Math.abs(a * p.x() + b * p.y() + c * p.z() + d) / Math.sqrt(a * a + b * b + c * c);
   }
 
-  private static List<RoofPlanResult> mergeClosePlanes(List<RoofPlanResult> planes, double tolXY, double tolZ) {
+  private static List<RoofPlanResult> mergeClosePlanes(
+      List<RoofPlanResult> planes, double tolXY, double tolZ) {
     boolean merged;
     do {
       merged = false;
@@ -120,11 +119,13 @@ public class RoofPitchService {
     return planes;
   }
 
-  private static boolean shouldMerge(RoofPlanResult p1, RoofPlanResult p2, double tolXY, double tolZ) {
+  private static boolean shouldMerge(
+      RoofPlanResult p1, RoofPlanResult p2, double tolXY, double tolZ) {
     Point center1 = getCentroid(p1.getPoints());
     Point center2 = getCentroid(p2.getPoints());
 
-    double distXY = Math.sqrt(Math.pow(center1.x() - center2.x(), 2) + Math.pow(center1.y() - center2.y(), 2));
+    double distXY =
+        Math.sqrt(Math.pow(center1.x() - center2.x(), 2) + Math.pow(center1.y() - center2.y(), 2));
     double diffZ = Math.abs(center1.z() - center2.z());
 
     return distXY <= tolXY && diffZ <= tolZ;
