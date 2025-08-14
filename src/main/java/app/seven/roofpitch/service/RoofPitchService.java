@@ -1,5 +1,8 @@
 package app.seven.roofpitch.service;
+import app.seven.roofpitch.model.Plan;
 import app.seven.roofpitch.model.Point;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.math3.linear.*;
 import org.springframework.stereotype.Service;
@@ -7,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoofPitchService {
 
-  public double getRoofPitch(List<Point> points) {
+  public List<Plan> getRoofPitch(List<Point> points) {
     int n = points.size();
     double sumX = 0, sumY = 0, sumZ = 0;
     double sumX2 = 0, sumY2 = 0, sumXY = 0, sumXZ = 0, sumYZ = 0;
@@ -36,7 +39,7 @@ public class RoofPitchService {
 
     double slopeRad = Math.acos(1 / Math.sqrt(a * a + b * b + 1));
     double Deg = Math.toDegrees(slopeRad);
-    return Deg;
+    return new ArrayList<>();
   }
 
   private double[] solveLinearSystem(double[][] A, double[] B) {
