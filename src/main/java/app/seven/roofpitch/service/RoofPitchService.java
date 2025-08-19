@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoofPitchService {
 
-  public static List<RoofPlanResult> detectRoofPlanes(
+  public List<RoofPlanResult> detectRoofPlanes(
       List<Point> allPoints, double tolPlane, double tolMergeXY, double tolMergeZ) {
     List<RoofPlanResult> planes = new ArrayList<>();
     List<Point> points = new ArrayList<>(allPoints);
 
-    // Détection par RANSAC simplifié
     while (points.size() >= 3) {
       RoofPlanResult bestPlane = findBestPlane(points, tolPlane);
       if (bestPlane.getPoints().size() < 3) break;
@@ -24,7 +23,6 @@ public class RoofPitchService {
       points.removeAll(bestPlane.getPoints());
     }
 
-    // Fusion des plans proches
     return mergeClosePlanes(planes, tolMergeXY, tolMergeZ);
   }
 
