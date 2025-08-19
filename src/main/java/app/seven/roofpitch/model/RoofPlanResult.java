@@ -4,10 +4,12 @@ import java.util.List;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @Data
 @Getter
+@Setter
 public class RoofPlanResult {
   private List<Point> points;
   private double slopeDegrees;
