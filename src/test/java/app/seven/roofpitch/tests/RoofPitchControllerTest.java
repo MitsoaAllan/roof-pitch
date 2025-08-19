@@ -32,7 +32,7 @@ class RoofPitchControllerTest {
     List<Point> points = List.of(new Point(0, 0, 0), new Point(1, 0, 1), new Point(0, 1, 1));
 
     RoofPlanResult mockResult = new RoofPlanResult();
-    mockResult.setSlopeDegrees(45.0); // Exemple de pente
+    mockResult.setSlopeDegrees(45.0);
 
     when(roofPitchService.detectRoofPlanes(points, 0.1, 0.2, 0.3)).thenReturn(List.of(mockResult));
 

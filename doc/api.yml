@@ -1,0 +1,135 @@
+openapi: 3.0.1
+info:
+  title: Roof Pitch API
+  version: 1.0.0
+  description: API to calculate the roof pitch (slope) from 3D points.
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+paths:
+  /roofpitch:
+    get:
+      summary: Calculate roof pitch
+      description: |
+        Computes the best-fit plane and slope (in degrees) from a list of 3D points.
+      parameters:
+        - name: tolPlane
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+          description: Tolerance for plane fitting
+        - name: tolMergeXY
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+          description: Tolerance for merging in XY
+        - name: tolMergeZ
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+          description: Tolerance for merging in Z
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Point'
+            example:
+              - x: 0.0
+                y: 0.0
+                z: 0.0
+              - x: 1.0
+                y: 0.0
+                z: 1.0
+              - x: 0.0
+                y: 1.0
+                z: 1.0
+      responses:
+        '200':
+          description: Roof pitch calculation result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoofPlanResult'
+              example:
+                - points:
+                    - x: 0.0
+                      y: 0.0
+                      z: 0.0
+                    - x: 1.0
+                      y: 0.0
+                      z: 1.0
+                    - x: 0.0
+                      y: 1.0
+                      z: 1.0
+                  slopeDegrees: 54.735610317245346
+                  a: -1.0
+                  b: -1.0
+                  c: 1.0
+                  d: -0.0
+
+components:
+  schemas:
+    Point:
+      type: object
+      properties:
+        x:
+          type: number
+          format: double
+        y:
+          type: number
+          format: double
+        z:
+          type: number
+          format: double
+      required:
+        - x
+        - y
+        - z
+
+    RoofPlanResult:
+      type: object
+      properties:
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+        slopeDegrees:
+          type: number
+          format: double
+          description: Roof slope in degrees
+        a:
+          type: number
+          format: double
+          description: Plane coefficient for X
+        b:
+          type: number
+          format: double
+          description: Plane coefficient for Y
+        c:
+          type: number
+          format: double
+          description: Plane coefficient for Z
+        d:
+          type: number
+          format: double
+          description: Plane constant
+      required:
+        - points
+        - slopeDegrees
+        - a
+        - b
+        - c
+        - d
