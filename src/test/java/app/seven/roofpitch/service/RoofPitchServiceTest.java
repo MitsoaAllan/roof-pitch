@@ -25,9 +25,9 @@ public class RoofPitchServiceTest {
 
     List<List<Point>> planes = roofPitchService.segmentIntoPlanes(points);
     log.info(planes.toString());
-    assertEquals(1, planes.size(), "On doit trouver 2 plans");
+    assertEquals(1, planes.size());
     for (List<Point> plane : planes) {
-      assertTrue(plane.size() >= 3, "Chaque plan doit avoir au moins 3 points");
+      assertTrue(plane.size() >= 3);
     }
     boolean pointIsInPlane =
         planes.stream()
