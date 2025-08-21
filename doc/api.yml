@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Roof Pitch Detection API
+  version: 1.0.0
+  description:
+    API to detect roof planes from 3D points. Takes a set of points in (x,y,z) space and returns
+    planes, each with it's list of points and computed slope
+
+paths:
+  /roofpitch:
+    post:
+      summary: Detect roof planes and computed slope
+      description:
+        Segments a set of 3D points into roof planes. Each plane contains a list of points and the computed slope slope in degrees.
+        An optional tolerance parameter controls the planes detection sensitivity.
+      parameters:
+        - name: tolerance
+          in: query
+          required: false
+          schema:
+            type: number
+            format: double
+            default: 0.01
+          description: maximum allowed distance from the plane for points to be considered as being in the same plane.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Point'
+      responses:
+        '200':
+          description: List of detected planes with slope
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlaneWithPente'
+components:
+  schemas:
+    Point:
+      type: object
+      properties:
+        x:
+          type: number
+          format: double
+        y:
+          type: number
+          format: double
+        z:
+          type: number
+          format: double
+      required: [x,y,z]
+
+    PlaneWithPente:
+      type: object
+      properties:
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+        pente:
+          type: number
+          format: double
+      required: [plans, pente]
