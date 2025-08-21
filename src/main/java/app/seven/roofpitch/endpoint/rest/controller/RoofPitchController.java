@@ -1,18 +1,19 @@
 package app.seven.roofpitch.endpoint.rest.controller;
 
 import app.seven.roofpitch.model.Point;
-import app.seven.roofpitch.service.RoofPitchService;
+
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import app.seven.roofpitch.service.DetectePlanesService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class RoofPitchController {
 
-  private RoofPitchService roofPitchService;
+  private DetectePlanesService roofPitchService;
 
-  @GetMapping("/roofpitch")
-  public List<List<Point>> roofpitch(List<Point> points) {
-    return roofPitchService.segmentIntoPlanes(points);
+  @PostMapping("/roofpitch")
+  public List<List<Point>> roofpitch(@RequestBody List<Point> points, @RequestParam(required = false) Double tolerance) {
+    return roofPitchService.detectePlanes(points, tolerance);
   }
 }
