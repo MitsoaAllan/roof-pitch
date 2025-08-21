@@ -2,6 +2,7 @@ package app.seven.roofpitch.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.reflections.Reflections.log;
 
 import app.seven.roofpitch.model.Point;
 import app.seven.roofpitch.model.RoofPlanResult;
@@ -19,6 +20,7 @@ public class RoofPitchServiceTest {
 
     List<RoofPlanResult> planes = roofPitchService.detectRoofPlanes(points, 0.01, 0.5, 0.5);
 
+    log.info(String.valueOf(planes.get(0).getSlopeDegrees()));
     assertEquals(1, planes.size(), "Only one plane should be detected");
     assertEquals(0.0, planes.get(0).getSlopeDegrees(), 1e-6, "Flat roof should have 0° slope");
   }
@@ -30,6 +32,7 @@ public class RoofPitchServiceTest {
 
     List<RoofPlanResult> planes = roofPitchService.detectRoofPlanes(points, 0.01, 0.5, 0.5);
 
+    log.info(String.valueOf(planes.get(0).getSlopeDegrees()));
     assertEquals(1, planes.size(), "Only one plane should be detected");
     assertTrue(planes.get(0).getSlopeDegrees() > 0, "The slope should be positive");
     assertEquals(
@@ -54,6 +57,7 @@ public class RoofPitchServiceTest {
 
     List<RoofPlanResult> planes = roofPitchService.detectRoofPlanes(points, 0.01, 0.5, 0.5);
 
+    log.info(planes.toString());
     assertEquals(2, planes.size(), "Two planes should be detected");
   }
 
